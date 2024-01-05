@@ -327,4 +327,4 @@ for(const [key,value] of gameEvents){
 }
 
 const airline = 'Air India';
-const plane = "A320"
+const plane = "A320";
