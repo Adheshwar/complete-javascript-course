@@ -369,11 +369,10 @@ document.querySelector('button').addEventListener('click', function(){
   if(entered){
     let arr = entered.split('\n');
     for(const iter in arr){
-      let initial = arr[iter].trim().toLowerCase().split('_');
-      initial[1] = initial[1][0].toUpperCase() + initial[1].slice(1);
-      let pad = initial.join('').padEnd(20, ' ');
+      let [initial, final] = arr[iter].trim().toLowerCase().split('_');
+      let pad = initial + final.replace(final[0], final[0].toUpperCase());
       //console.log(iter+1);
-      console.log(pad+ '✅'.repeat(parseInt(iter)+1));
+      console.log(pad.padEnd(20,' ')+ '✅'.repeat(parseInt(iter)+1));
     }
   }
 })
