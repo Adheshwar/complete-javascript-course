@@ -1,9 +1,5 @@
 'use strict';
 
-// Data needed for a later exercise
-const flights =
-  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
-
 // Data needed for first part of the section
 const restaurant = {
   name: 'Classico Italiano',
@@ -376,3 +372,19 @@ document.querySelector('button').addEventListener('click', function(){
     }
   }
 })
+
+// Data needed for a later exercise
+const flights =
+  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+
+const getCode = str => str.slice(0,3).toUpperCase();
+for(let iter of flights.split('+')){
+  let [status, from, to, time] = iter.split(';');
+  status = status.replaceAll('_',' ').trim();
+  if(status.startsWith('Delay')){
+    status = `🔴 ${status}`;
+  }
+
+  time = time.replace(':','h');
+  console.log(`${status} from ${getCode(from)} to ${getCode(to)} (${time})`.padStart(44));
+}
