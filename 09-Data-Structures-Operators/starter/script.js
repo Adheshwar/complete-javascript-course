@@ -95,3 +95,236 @@ const add = function(...numbers){
 }
 
 add(2, 3, 6, 9);
+
+//short-circuiting
+console.log(3 || 'Jonas')
+
+//Nullish Coalescing --> null, undefined does not include 0 and empty string
+restaurant.numGuest = 0;
+const guests = restaurant.numGuest ?? 10;
+console.log(guests);
+
+const rest1 = {
+  name: "Capri",
+  numGuests: 20,
+}
+
+const rest2 = {
+  name: "La Pizzalo",
+  owner: 'Giovanni Rossi',
+}
+
+rest2.numGuest ||= 10;
+console.log(rest2);
+
+
+// Coding Challenge #1
+
+/* 
+We're building a football betting app (soccer for my American friends 😅)!
+
+Suppose we get data from a web service about a certain game (below). In this challenge we're gonna work with the data. So here are your tasks:
+
+1. Create one player array for each team (variables 'players1' and 'players2')
+2. The first player in any player array is the goalkeeper and the others are field players. For Bayern Munich (team 1) create one variable ('gk') with the goalkeeper's name, and one array ('c') with all the remaining 10 field players
+3. Create an array 'allPlayers' containing all players of both teams (22 players)
+4. During the game, Bayern Munich (team 1) used 3 substitute players. So create a new array ('players1Final') containing all the original team1 players plus 'Thiago', 'Coutinho' and 'Perisic'
+5. Based on the game.odds object, create one variable for each odd (called 'team1', 'draw' and 'team2')
+6. Write a function ('printGoals') that receives an arbitrary number of player names (NOT an array) and prints each of them to the console, along with the number of goals that were scored in total (number of player names passed in)
+7. The team with the lower odd is more likely to win. Print to the console which team is more likely to win, WITHOUT using an if/else statement or the ternary operator.
+
+TEST DATA FOR 6: Use players 'Davies', 'Muller', 'Lewandowski' and 'Kimmich'. Then, call the function again with players from game.scored
+
+GOOD LUCK 😀
+*/
+const game = {
+  team1: 'Bayern Munich',
+  team2: 'Borrussia Dortmund',
+  players: [
+    [
+      'Neuer',
+      'Pavard',
+      'Martinez',
+      'Alaba',
+      'Davies',
+      'Kimmich',
+      'Goretzka',
+      'Coman',
+      'Muller',
+      'Gnarby',
+      'Lewandowski',
+    ],
+    [
+      'Burki',
+      'Schulz',
+      'Hummels',
+      'Akanji',
+      'Hakimi',
+      'Weigl',
+      'Witsel',
+      'Hazard',
+      'Brandt',
+      'Sancho',
+      'Gotze',
+    ],
+  ],
+  score: '4:0',
+  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
+  date: 'Nov 9th, 2037',
+  odds: {
+    team1: 1.33,
+    x: 3.25,
+    team2: 6.5,
+  },
+  printGoals: function(...players){
+    console.log(`scored ${players.length} goals`);
+  }
+};
+
+const [player1, player2]= game.players;
+console.log(player1,player2);
+const [gk, ...fieldPlayers] = player1;
+console.log(gk, fieldPlayers)
+const allPlayers = [...player1, ...player2];
+console.log(allPlayers)
+const player1Final = [...player1,'Thiago', 'Coutinho' , 'Perisic'];
+console.log(player1Final)
+const {odds:{team1,x:draw,team2}} = game;
+console.log(team1,draw,team2)
+game.printGoals('Davies', 'Muller', 'Lewandowski' , 'Kimmich')
+
+team1 < team2 && console.log(`Team 1 is likely to win`);
+team1 > team2 && console.log(`Team 2 is likely to win`);
+
+//For of loop
+for(let iter of menu1) console.log(iter);
+
+///////////////////////////////////////
+// Coding Challenge #2
+
+/* 
+Let's continue with our football betting app!
+
+1. Loop over the game.scored array and print each player name to the console, along with the goal number (Example: "Goal 1: Lewandowski")
+2. Use a loop to calculate the average odd and log it to the console (We already studied how to calculate averages, you can go check if you don't remember)
+3. Print the 3 odds to the console, but in a nice formatted way, exaclty like this:
+      Odd of victory Bayern Munich: 1.33
+      Odd of draw: 3.25
+      Odd of victory Borrussia Dortmund: 6.5
+Get the team names directly from the game object, don't hardcode them (except for "draw"). HINT: Note how the odds and the game objects have the same property names 😉
+
+BONUS: Create an object called 'scorers' which contains the names of the players who scored as properties, and the number of goals as the value. In this game, it will look like this:
+      {
+        Gnarby: 1,
+        Hummels: 1,
+        Lewandowski: 2
+      }
+
+GOOD LUCK 😀
+*/
+const printGoal =function(...players){
+  for(let [key,value] of game.scored.entries()) console.log(`Goal ${key+1}: ${value}`);
+}
+
+printGoal(game.scored)
+/*
+let keys = Object.keys(game.odds);
+//console.log(keys)
+let sum=0;
+for(let iter of keys){
+  sum +=game.odds?.[iter];
+  console.log(`Odd of victory ${game[iter] ?? 'draw'}: ${game.odds[iter]}`);
+}
+
+console.log(sum/keys.length);
+*/
+const orderSet = new Set(['Pasta', 'Pizza', 'Pizza','Risotto','Pasta']);
+console.log(orderSet);
+console.log(orderSet.size);
+console.log(orderSet.has('Pizza'));
+orderSet.add('Garlic Bread');
+orderSet.add('Garlic Bread');
+console.log(orderSet);
+
+//Maps
+const rest = new Map();
+rest.set('name', 'Adyar Ananda Bhavan');
+rest.set(1, 'Chennai');
+rest.set(2, 'Madurai').set('categories', ['Sweets', 'A2B']);
+
+console.log(rest);
+console.log(rest.get(1));
+
+console.log(rest.has(1));
+console.log(rest.size);
+
+
+const question = new Map([
+  ['question', 'Which is the capital of Tamil Nadu?'],
+  [1, 'Coimbatore'],
+  [2, 'Chennai'],
+  [3, 'Madurai'],
+  ['correct', 2],
+  [true, 'Correct!'],
+  [false, 'Try again!'],
+]);
+/*
+console.log(question.get('question'));
+for(const [key, value] of question){
+  if(typeof key == 'number') console.log(`Answer ${key}: ${value}`)
+}
+
+const answer = Number(prompt('Your answer'));
+
+console.log(question.get(question.get('correct') === answer));
+*/
+
+// Coding Challenge #3
+
+/* 
+Let's continue with our football betting app! This time, we have a map with a log of the events that happened during the game. The values are the events themselves, and the keys are the minutes in which each event happened (a football game has 90 minutes plus some extra time).
+
+1. Create an array 'events' of the different game events that happened (no duplicates)
+2. After the game has finished, is was found that the yellow card from minute 64 was unfair. So remove this event from the game events log.
+3. Print the following string to the console: "An event happened, on average, every 9 minutes" (keep in mind that a game has 90 minutes)
+4. Loop over the events and log them to the console, marking whether it's in the first half or second half (after 45 min) of the game, like this:
+      [FIRST HALF] 17: ⚽️ GOAL
+
+GOOD LUCK 😀
+*/
+
+const gameEvents = new Map([
+  [17, '⚽️ GOAL'],
+  [36, '🔁 Substitution'],
+  [47, '⚽️ GOAL'],
+  [61, '🔁 Substitution'],
+  [64, '🔶 Yellow card'],
+  [69, '🔴 Red card'],
+  [70, '🔁 Substitution'],
+  [72, '🔁 Substitution'],
+  [76, '⚽️ GOAL'],
+  [80, '⚽️ GOAL'],
+  [92, '🔶 Yellow card'],
+]);
+
+const events = new Set([...gameEvents.values()]);
+
+console.log(events);
+
+gameEvents.delete(64);
+console.log(gameEvents);
+let sum = 0;
+
+for(const iter of gameEvents.keys()){
+  sum += iter;
+}
+console.log(gameEvents.size);
+console.log(sum/90);
+
+for(const [key,value] of gameEvents){
+  const half = key <=45 ? 'FIRST' : "SECOND";
+  console.log(`[${half} HALF] : ${key} ${value}`)
+}
+
+const airline = 'Air India';
+const plane = "A320"
