@@ -19,4 +19,4 @@ const createBooking = function(flightNum, numPassengers=1, price=2000){
     bookings.push(booking);
 };
 
-createBooking('AI2456');
+createBooking('AI2456');//Check sync
