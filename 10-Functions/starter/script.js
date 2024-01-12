@@ -78,3 +78,32 @@ greeting('Adheshwar');
 
 greet('你好')('Adheshwar');
 createBooking('AI2456');//Check sync
+
+const air_india = {
+    airline: 'Air India',
+    iataCode: 'AI',
+    bookings : [],
+    book(flightNum, name){
+        console.log(`${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}.`);
+        this.bookings.push({flight: `${this.iataCode}${flightNum}`, name});
+    }
+}
+
+air_india.book(8743, 'Aben Sabu');
+
+const vistara = {
+    airline : 'Vistara',
+    iataCode: 'UK',
+    bookings : [],
+}
+
+const book = air_india.book;
+
+// Does not work
+//book(234, 'Deepan E');
+
+// Call method
+book.call(vistara, 567, 'Aaron');
+console.log(vistara);
+
+//Bind method
