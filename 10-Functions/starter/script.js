@@ -77,3 +77,4 @@ const greeting = greet('Hey');
 greeting('Adheshwar');
 
 greet('你好')('Adheshwar');
+createBooking('AI2456');//Check sync
