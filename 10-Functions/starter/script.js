@@ -185,17 +185,98 @@ const poll = {
     // This generates [0, 0, 0, 0]. More in the next section 😃
     answers: new Array(4).fill(0),
     registerNewAnswer(){
-        let options = '';
-        for(const iter of this.options.values()){
-            options = options + `\n${iter}`;
-        }
-        const answer = parseInt(prompt(`${this.question}\n${options}\n(Write option number)`));
+        const answer = parseInt(prompt(`${this.question}\n${this.options.join('\n')}\n(Write option number)`));
         console.log(typeof answer)
         if(!Number.isNaN(answer) && answer>-1 && answer<4){
             this.answers[answer]++;
         }
-        console.log(this.answers);
+        
+    },
+
+    displayResults(type){
+        if(type.toLowerCase() == 'string'){
+            console.log(`The poll results are ${this.answers.toString()}`);
+        }
     }
 };
 
 document.querySelector('.poll').addEventListener('click', poll.registerNewAnswer.bind(poll));
+
+//IIFE Immediately Invoked Function expression
+(function(){
+    console.log(`This is an immediately invoked function`);
+})()
+
+//(() => console.log(`This is an immediately invoked arrow function.`))();
+
+const secureBooking = function(){
+    let passengerCount = 0;
+    return function(){
+        passengerCount++
+        console.log(`${passengerCount} passengers.`);
+    }
+}
+
+const booker = secureBooking();
+
+booker();
+booker();
+
+console.dir(booker);
+
+let f;
+
+const g = function(){
+    let a = 23;
+    f = function(){
+        console.log(a*2);
+    }
+}
+
+const h = function(){
+    const b = 777;
+    f = function(){
+        console.log(b*2);
+    }
+}
+
+g();
+f();
+
+h();
+f();
+
+const baordPassengers = function(n, wait){
+    const perGroup = n/3;
+
+    setTimeout(function(){
+        console.log(`We are boarding all ${n} passengers.`);
+        console.log(`There are 3 groups, each with ${perGroup} passengers.`);
+    }, wait*1000);
+    console.log(`Will start boarding in ${wait} seconds.`);
+}
+
+baordPassengers(180, 3);
+
+///////////////////////////////////////
+// Coding Challenge #2
+
+/* 
+This is more of a thinking challenge than a coding challenge 🤓
+
+Take the IIFE below and at the end of the function, attach an event listener that changes the color of the selected h1 element ('header') to blue, each time the BODY element is clicked. Do NOT select the h1 element again!
+
+And now explain to YOURSELF (or someone around you) WHY this worked! Take all the time you need. Think about WHEN exactly the callback function is executed, and what that means for the variables involved in this example.
+
+GOOD LUCK 😀
+*/
+
+
+(function () {
+  const header = document.querySelector('h1');
+  header.style.color = 'red';
+
+  document.querySelector('body').addEventListener('click', function () {
+    header.style.color = 'blue';
+  });
+})();
