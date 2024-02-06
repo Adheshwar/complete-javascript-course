@@ -80,15 +80,9 @@ displayMovements(account1.movements)
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
-
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
+// For each loop
 movements.forEach(function(mov){
   if(mov > 0){
     console.log(`You have deposited ${mov}`);
@@ -111,6 +105,23 @@ console.log(arr2.reverse());
 const letters = arr.concat(arr2);
 console.log(letters);
 
+
+const currencies = new Map([
+  ['USD', 'United States dollar'],
+  ['EUR', 'Euro'],
+  ['GBP', 'Pound sterling'],
+]);
+
+currencies.forEach(function(val, key, map){
+  console.log(`${val} is ${key}`);
+});
+
+const curr_uniq = new Set(['USD', 'INR', 'GBP', 'CHY', 'USD']);
+console.log(curr_uniq);
+
+curr_uniq.forEach(function(cur, i, set){
+  console.log(`${i}: ${cur}`);
+});
 
 ///////////////////////////////////////
 // Coding Challenge #1
