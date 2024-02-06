@@ -75,7 +75,22 @@ const displayMovements = function(movements){
   })
 }
 
-displayMovements(account1.movements)
+displayMovements(account1.movements);
+
+function createusername(accounts){
+  accounts.forEach(function(acc){
+    acc.username = acc.owner.toLocaleLowerCase().split(' ').map(word => word.charAt(0)).join('')
+  })
+  return;
+}
+
+createusername(accounts);
+console.log(accounts)
+/*
+const user = 'Steven Thomas William';
+const user_name = user.toLocaleLowerCase().split(' ').map(word => word.charAt(0)).join('');
+console.log(user_name);
+*/
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -91,6 +106,18 @@ movements.forEach(function(mov){
     console.log(`You withdrew ${Math.abs(mov)}`);
   }
 })
+
+// Map
+const euroTousd = 1.1;
+// Function expression
+const movementsUSD = movements.map(function(mov){
+  return mov*euroTousd;
+});
+//Arrow function
+const movementsUSD_arrow = movements.map((movs) => movs*euroTousd);
+console.log(movementsUSD_arrow)
+
+console.log("EUR to USD "+movementsUSD);
 /////////////////////////////////////////////////
 let arr = ['a', 'b', 'c', 'd', 'e'];
 console.log(arr.slice(2));
