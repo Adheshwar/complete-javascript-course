@@ -94,7 +94,7 @@ console.log(user_name);
 
 const calcBalance = function(movements){
   const balance = movements.reduce((acc,cur) => acc+cur, 0);
-  labelBalance.textContent = `${balance} €`;
+  labelBalance.textContent = `${balance}€`;
 };
 
 calcBalance(account1.movements);
@@ -175,6 +175,29 @@ console.log(bal_arrow);
 //Maximum value using reduce
 const max = movements.reduce((acc, cur) => acc>cur ? acc : cur , movements[0]);
 console.log(max);
+
+// Chaining Methods
+const tot_deposit = movements.filter(mov => mov>0).map(mov=> mov*euroTousd).reduce((acc, cur) => acc+cur , 0);
+console.log(`Total deposit in USD : ${tot_deposit}`);
+
+//Display Summary
+const displaySummary = function(mov){
+  const deposit = mov.filter(mov => mov>0).reduce((acc,mov) => acc+mov ,0);
+  const withdraw = Math.abs(mov.filter(mov => mov<0).reduce((acc, mov) => acc+mov, 0));
+  const interest = mov.filter(mov => mov>0).map(mov => mov*1.2/100).filter(int => int>=1).reduce((acc, cur) => acc+cur ,0);
+  labelSumIn.textContent = `${deposit}€`;
+  labelSumOut.textContent = `${withdraw}€`;
+  labelSumInterest.textContent = `${interest}€`
+};
+
+displaySummary(account1.movements);
+
+//Find method
+const firstWithdrawal = movements.find(mov => mov<0);
+console.log(firstWithdrawal);
+
+const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(account);
 ///////////////////////////////////////
 // Coding Challenge #1
 
@@ -224,11 +247,13 @@ TEST DATA 2: [16, 6, 10, 5, 6, 1, 4]
 
 GOOD LUCK 😀
 */
-
+/*
 const calcAverageHumanAge = function(dogAge){
   let humanAge = dogAge.map(age => age<=2 ? 2*age : 16 + age*4);
   let dogFinalAge = humanAge.filter(age => age>=18);
   return dogFinalAge.reduce((acc,cur, i, arr) => acc+(cur/arr.length),0);
 }
+*/
 
+const calcAverageHumanAge = dogAge => dogAge.map(age => age<=2 ? 2*age : 16 + age*4).filter(age => age>=18).reduce((acc, age, i, arr) => acc+(age/arr.length),0);
 console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]), calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]));
