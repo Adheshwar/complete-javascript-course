@@ -82,7 +82,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 // Functions
 const daysPassed = (date1, date2) => Math.abs(date2 - date1) / (1000 * 24 * 60 * 60);
 
-const formatMovementDate = function (date) {
+const formatMovementDate = function (date,locale) {
   const now1 = new Date();
   //labelDate.textContent = now1;
   const daysWent = Math.round(Math.abs(daysPassed(new Date(), date)));
@@ -91,13 +91,25 @@ const formatMovementDate = function (date) {
   if (daysWent == 1) return 'Yesterday';
   if (daysWent <= 7) return `${daysWent} days ago`;
   else {
+    /*
     const day = `${date.getDate()}`.padStart(2, 0);
     const month = `${(date.getMonth() + 1)}`.padStart(2, 0);
     const year = date.getFullYear();
 
     return `${day}/${month}/${year}`;
+    */
+   return new Intl.DateTimeFormat(locale).format(date);
   }
 }
+
+const formatCurrency = function(value, locale, currency){
+  const formattedCur = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency : currency
+  }).format(value);
+
+  return formattedCur;
+};
 
 const displayMovements = function (account, sort = false) {
   containerMovements.innerHTML = '';
@@ -111,13 +123,14 @@ const displayMovements = function (account, sort = false) {
     const month = `${(to_date.getMonth() + 1)}`.padStart(2, 0);
     const year = to_date.getFullYear();
 
-    const showDate = formatMovementDate(to_date);
+    const showDate = formatMovementDate(to_date, account.locale);
+    
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${i + 1
       } ${type}</div>
         <div class="movements__date">${showDate}</div>
-        <div class="movements__value">${mov.toFixed(2)}€</div>
+        <div class="movements__value">${formatCurrency(mov, account.locale, account.currency)}</div>
       </div>
     `;
 
@@ -127,19 +140,27 @@ const displayMovements = function (account, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+  const formatMov = new Intl.NumberFormat(acc.locale,{
+    style: 'currency',
+    currency : acc.currency
+  }).format(acc.balance);
+  labelBalance.textContent = `${formatMov}`;
 };
 
 const calcDisplaySummary = function (acc) {
+  const formatMov = new Intl.NumberFormat(acc.locale,{
+    style: 'currency',
+    currency : acc.currency
+  });
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+  labelSumIn.textContent = `${formatMov.format(incomes)}`;
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
+  labelSumOut.textContent = `${formatMov.format(Math.abs(out))}`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -149,7 +170,7 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  labelSumInterest.textContent = `${formatMov.format(interest)}`;
 };
 
 const createUsernames = function (accs) {
@@ -205,7 +226,20 @@ btnLogin.addEventListener('click', function (e) {
     const year = now1.getFullYear();
     const hours = now1.getHours();
     const mins = now1.getMinutes();
-    labelDate.textContent = `${date}/${month}/${year}, ${hours}:${mins}`;
+    
+    const option = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'long',
+      year: '2-digit',
+      weekday: 'short'
+    }
+
+    const locale = navigator.language;
+    console.log(locale);
+    labelDate.textContent = new Intl.DateTimeFormat(currentAccount.locale, option).format(now1);
+    //labelDate.textContent = `${date}/${month}/${year}, ${hours}:${mins}`;
     containerApp.style.opacity = 100;
 
     // Clear input fields
@@ -369,3 +403,13 @@ console.log(future);
 
 console.log(Number(future));
 console.log(daysPassed(new Date(2024, 4, 14), new Date(2024, 3, 31)));
+
+//Internationalization Numbers
+const num = 349843.83;
+const options = {
+  style: 'unit',//unit,percent,currentcy
+  unit: 'km-per-second',
+  currency: 'EUR'
+}
+console.log(new Intl.NumberFormat('en-US').format(num));
+console.log(new Intl.NumberFormat('GB-en',options).format(num))
