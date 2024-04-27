@@ -9,6 +9,14 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
+const allButtons = document.getElementsByTagName('button');
+const header = document.querySelector('.header');
+const allSections = document.querySelectorAll('.section');
+const h1 = document.querySelector('h1');
 
 const openModal = function (event) {
   event.preventDefault();
@@ -25,7 +33,7 @@ const closeModal = function () {
 for (let i = 0; i < btnsOpenModal.length; i++)
   btnsOpenModal[i].addEventListener('click', openModal);
 */
-btnsOpenModal.forEach(function(element){
+btnsOpenModal.forEach(function (element) {
   element.addEventListener('click', openModal);
 });
 
@@ -40,7 +48,7 @@ document.addEventListener('keydown', function (e) {
 
 ///////////////////////////////////////////////////////
 //Smooth scrolling
-btnScrollTo.addEventListener('click', function(event){
+btnScrollTo.addEventListener('click', function (event) {
   /*
   const s1coords = section1.getBoundingClientRect();
   console.log(s1coords);
@@ -75,9 +83,9 @@ document.querySelectorAll('.nav__link').forEach(function(node){
 });*/
 
 // Event Delegation
-document.querySelector('.nav__links').addEventListener('click', function(e){
+document.querySelector('.nav__links').addEventListener('click', function (e) {
   //console.log(e.target.classList.contains('.nav__link'));
-  if(e.target.classList.contains('nav__link')){
+  if (e.target.classList.contains('nav__link')) {
     e.preventDefault();
     const id = e.target.getAttribute('href');
     //console.log(id);
@@ -87,16 +95,110 @@ document.querySelector('.nav__links').addEventListener('click', function(e){
   }
 });
 
+//tabbed component
+tabsContainer.addEventListener('click', function (ev) {
+  const clicked = ev.target.closest('.operations__tab');
+  if (!clicked) return;
+
+  tabs.forEach(ta => ta.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+
+  //Activate content area
+  tabsContent.forEach(con => con.classList.remove('operations__content--active'));
+  document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active');
+});
+
+// Menu fade animation
+
+const toggleOpacity = function (e) {
+//console.log(e);
+  if (e.target.classList.contains('nav__link')) {
+    const mouseoverd = e.target;
+    //console.log(e.target);
+    const siblings = mouseoverd.closest('.nav').querySelectorAll('.nav__link');
+    const logo = mouseoverd.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el != mouseoverd) el.style.opacity = this;
+    });
+
+    logo.style.opacity = this;
+  }
+}
+
+// Passing argument into handler
+nav.addEventListener('mouseover', toggleOpacity.bind(0.5));
+
+nav.addEventListener('mouseout', toggleOpacity.bind(1));
+
+// Sticky Navigation
+/*
+const initialCoords = section1.getBoundingClientRect();
+console.log(initialCoords);
+window.addEventListener('scroll', function(e){
+  if(this.window.scrollY > initialCoords.top) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+
+});
+*/
+// Sticky navigation: Intersection Observer API
+/*
+const obsCallback = function(entries, observer){
+  entries.forEach(entry => {
+    console.log(entry);
+  });
+};
+const obsOptions = {
+  root: null,
+  threshold: [0, 0.2]
+};
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(section1);
+*/
+const stickyNav = function(entries){
+  const [entry] = entries;
+  //console.log(entry);
+  if(!entry.isIntersecting)
+    nav.classList.add('sticky');
+  else
+    nav.classList.remove('sticky');
+}
+
+const navHeight = nav.getBoundingClientRect().height;
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`
+});
+headerObserver.observe(header);
+
+// Reveal Sections
+const revealSect = function(entries, observer){
+  const [entry] = entries;
+  //console.log(entry);
+  if(!entry.isIntersecting) return
+  
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+const secObserver = new IntersectionObserver(revealSect, {
+  root: null,
+  threshold: 0.15
+})
+allSections.forEach(function(section){
+  section.classList.add('section--hidden');
+  secObserver.observe(section);
+})
+////////////////////////////////////////////////
 console.log(document.documentElement);
 console.log(document.head);
 console.log(document.body);
 
 document.getElementById('section--1');
-const allButtons = document.getElementsByTagName('button');
-const header = document.querySelector('.header');
 console.log(document.getElementsByClassName('btn'));
 
 //Creating and inserting Elements
+/*
 const message = document.createElement('div');
 message.classList.add('cookie-message');
 //message.textContent = `We use cookie for improved functionality and analytics`;
@@ -108,11 +210,11 @@ header.append(message);
 //header.after(message);
 
 //Delete element
-document.querySelector('.btn--close-cookie').addEventListener('click', function(e) {
+document.querySelector('.btn--close-cookie').addEventListener('click', function (e) {
   message.remove();
   console.log(this);
-} );
-
+});
+/
 //Styles
 message.style.backgroundColor = '#37383d';
 message.style.width = '120%';
@@ -144,15 +246,15 @@ logo.classList.contains('c');
 // Overrides all classes--Don't use
 //logo.className = 'adhesh';
 
-const h1 = document.querySelector('h1');
-const alertH1 = function(e){
+
+const alertH1 = function (e) {
   alert('addEventListener: Reading H1 element.');
   h1.removeEventListener('mouseenter', alertH1);
 };
 
 h1.addEventListener('mouseenter', alertH1);
 
-setTimeout(()=> h1.removeEventListener('mouseenter', alertH1), 3000);
+setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
 /*
 h1.onmouseenter = function(e){
   alert('addEventListener: Reading H1 element.');
@@ -182,3 +284,29 @@ document.querySelector('.nav').addEventListener('click', function(e){
   this.style.backgroundColor = randomColor();
   console.log('Nav', e.target, e.currentTarget);
 });*/
+
+//DOM traversing
+h1.querySelectorAll('.highlight');
+console.log(h1.childNodes);
+console.log(h1.children);//Direct Children
+//First and Last element child
+//h1.firstElementChild.style.color = 'white';
+//h1.lastElementChild.style.color = 'green';
+
+//Upwards
+/*
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(function(el){
+  if(el != h1) el.style.transform = 'scale(0.5)';
+})
+*/
