@@ -1,6 +1,6 @@
 'use strict';
 // Using Constructor function
-const Person = function(firstName, birthYear){
+const Person = function (firstName, birthYear) {
     // Instance Properties
     this.firstName = firstName;
     this.birthYear = birthYear;
@@ -18,8 +18,8 @@ console.log(a instanceof Person);
 
 //Prototypes
 console.log(Person.prototype);
-Person.prototype.calcAge = function(){
-    console.log(new Date().getFullYear()-this.birthYear)
+Person.prototype.calcAge = function () {
+    console.log(new Date().getFullYear() - this.birthYear)
 };
 
 a.calcAge();
@@ -38,7 +38,7 @@ const h1 = document.querySelector('h1');
 
 //ES6 Class
 class PersonCl {
-    constructor(fullName, birthYear){
+    constructor(fullName, birthYear) {
         this.fullName = fullName;
         this.birthYear = birthYear;
     }
@@ -47,24 +47,24 @@ class PersonCl {
         console.log(new Date().getFullYear() - this.birthYear);
     }
 
-    greet(){
+    greet() {
         console.log(`Hey ${this.fullName}!`)
     }
 
-    get age(){
+    get age() {
         return new Date().getFullYear() - this.birthYear;
     }
 
-    set fullName(name){
-        if(name.includes(' ')) this._fullName = name;
+    set fullName(name) {
+        if (name.includes(' ')) this._fullName = name;
         else alert(`${name} is not a full name.`)
     }
 
-    get fullName(){
+    get fullName() {
         return this._fullName;
     }
 
-    static hey(){
+    static hey() {
         console.log(`Hello 👋`);
     }
 }
@@ -78,14 +78,14 @@ console.log(me);
 console.log(me.fullName)
 
 const account = {
-    owner : 'Adhesh',
+    owner: 'Adhesh',
     movements: [200, 1000, 234, 720],
 
-    get latest(){
+    get latest() {
         return this.movements.slice(-1).pop();
     },
 
-    set latest(mov){
+    set latest(mov) {
         this.movements.push(mov);
     }
 };
@@ -96,9 +96,9 @@ const PersonProto = {
         console.log(new Date().getFullYear() - this.birthYear);
     },
 
-    initialize(firstName, birthYear){
-       this.firstName = firstName;
-       this.birthYear = birthYear; 
+    initialize(firstName, birthYear) {
+        this.firstName = firstName;
+        this.birthYear = birthYear;
     }
 }
 
@@ -109,14 +109,14 @@ const ram = Object.create(PersonProto);
 ram.initialize('Ram', 2002);
 
 //Inheritance between Classes with constructor functions
-const Student = function(firstName, birthYear, course){
+const Student = function (firstName, birthYear, course) {
     Person.call(this, firstName, birthYear); // Inherit Person
     this.course = course;
 };
 //Linking Person Prototype
 Student.prototype = Object.create(Person.prototype);
 Student.prototype.constructor = Student;
-Student.prototype.introduce = function(){
+Student.prototype.introduce = function () {
     console.log(`My name is ${this.firstName} and I am studying ${this.course}`);
 };
 
@@ -129,18 +129,18 @@ mike.calcAge();
 
 //Inheritance between clasess with ES6 Classes
 class StudentCl extends PersonCl {
-    constructor(fullName, birthYear, course){
+    constructor(fullName, birthYear, course) {
         //Always needs to happen first
         super(fullName, birthYear);
         this.course = course;
     }
 
-    introduce(){
+    introduce() {
         console.log(`My name is ${this.fullName} and I am studying ${this.course}`);
     }
 
-    calcAge(){
-        console.log(`I'm ${new Date().getFullYear()-this.birthYear} years old, but as a student I feel more like ${new Date().getFullYear()-this.birthYear+10}`);
+    calcAge() {
+        console.log(`I'm ${new Date().getFullYear() - this.birthYear} years old, but as a student I feel more like ${new Date().getFullYear() - this.birthYear + 10}`);
     }
 }
 
@@ -151,12 +151,12 @@ kai.calcAge();
 
 //Inheritance between Classes by Object.create method
 const StudentProto = Object.create(PersonProto);
-StudentProto.initialize = function(firstName, birthYear, course){
+StudentProto.initialize = function (firstName, birthYear, course) {
     PersonProto.initialize.call(this, firstName, birthYear);
     this.course = course;
 };
 
-StudentProto.introduce = function(){
+StudentProto.introduce = function () {
     console.log(`My name is ${this.firstName} and I am studying ${this.course}`);
 }
 
@@ -165,7 +165,7 @@ jay.initialize('Jay', 2005, 'Computer Science');
 jay.introduce();
 jay.calcAge();
 
-class Account{
+class Account {
     // Public fields
     locale = navigator.language;
 
@@ -173,42 +173,42 @@ class Account{
     #movements = [];
     #pin;
 
-    constructor(owner, currency, pin){
+    constructor(owner, currency, pin) {
         this.owner = owner;
         this.currency = currency;
         //this.locale = navigator.language;
         //Protected Property
         this.#pin = pin;
         //this._movements = []; 
-    
+
         console.log(`Thanks for opening an account, ${this.owner}.`);
     }
 
     // Public interface
-    deposit(val){
+    deposit(val) {
         this.#movements.push(val);
         return this;
     }
 
-    withdraw(val){
+    withdraw(val) {
         this.deposit(-val);
         return this;
     }
 
-    requestLoan(val){
-        if(this.#approveLoan(val)){
+    requestLoan(val) {
+        if (this.#approveLoan(val)) {
             this.deposit(val);
             console.log('Loan approved');
             return this;
         }
     }
 
-    getMovements(){
+    getMovements() {
         return this.#movements;
     }
 
     //Private methods
-    #approveLoan(val){
+    #approveLoan(val) {
         return true;
     }
 };
@@ -241,17 +241,17 @@ DATA CAR 2: 'Mercedes' going at 95 km/h
 GOOD LUCK 😀
 */
 
-const Car = function(make, speed){
+const Car = function (make, speed) {
     this.make = make;
     this.speed = speed;
 };
 
-Car.prototype.accelerate = function(){
+Car.prototype.accelerate = function () {
     this.speed += 10;
     console.log(this.speed);
 };
 
-Car.prototype.brake = function(){
+Car.prototype.brake = function () {
     this.speed -= 5;
     console.log(this.speed);
 };
@@ -279,25 +279,26 @@ GOOD LUCK 😀
 */
 
 class CarCl {
-    constructor(make, speed){
+    constructor(make, speed) {
         this.make = make;
         this.speed = speed;
     }
 
-    accelerate(){
-        return this.speed+10;
+    accelerate() {
+        return this.speed + 10;
     }
 
-    brake(){
-        return this.speed-5;
+    brake() {
+        this.speed - 5;
+        return this;
     }
 
-    get speedUS(){
-        return this.speed/1.6;
+    get speedUS() {
+        return this.speed / 1.6;
     }
 
-    set speedUS(speed){
-        this.speed = speed*1.6;
+    set speedUS(speed) {
+        this.speed = speed * 1.6;
     }
 };
 
@@ -321,19 +322,19 @@ DATA CAR 1: 'Tesla' going at 120 km/h, with a charge of 23%
 GOOD LUCK 😀
 */
 
-const EV = function(make, speed, charge){
+const EV = function (make, speed, charge) {
     Car.call(this, make, speed);
     this.charge = charge;
 };
 
 EV.prototype = Object.create(Car.prototype);
-EV.prototype.chargeBattery = function(chargeTo){
+EV.prototype.chargeBattery = function (chargeTo) {
     this.charge = chargeTo;
     console.log(`${this.make} is being charged to ${this.charge}%.`)
 };
 
 EV.prototype.constructor = EV;
-EV.prototype.accelerate = function(){
+EV.prototype.accelerate = function () {
     this.speed += 20;
     this.charge -= 1;
     console.log(`${this.make} going at ${this.speed} km/hr, with charge of ${this.charge}%.`);
@@ -343,3 +344,38 @@ const tesla = new EV('Tesla', 120, 23);
 tesla.brake();
 tesla.chargeBattery(50);
 tesla.accelerate();
+
+///////////////////////////////////////
+// Coding Challenge #4
+
+/* 
+1. Re-create challenge #3, but this time using ES6 classes: create an 'EVCl' child class of the 'CarCl' class
+2. Make the 'charge' property private;
+3. Implement the ability to chain the 'accelerate' and 'chargeBattery' methods of this class, and also update the 'brake' method in the 'CarCl' class. They experiment with chining!
+
+DATA CAR 1: 'Rivian' going at 120 km/h, with a charge of 23%
+
+GOOD LUCK 😀
+*/
+
+class EVcl extends CarCl {
+    #charge;
+    constructor(make, speed, charge) {
+        super(make, speed);
+        this.#charge = charge;
+    }
+
+    chargeBattery(chargeTo) {
+        this.#charge = chargeTo;
+    }
+
+    accelerate() {
+        this.speed += 20;
+        this.#charge -= 1;
+        console.log(`${this.make} going at ${this.speed} km/hr, with charge of ${this.#charge}%.`);
+        return this;
+    }
+}
+
+var rivian = new EVcl('Rivian', 120, 23);
+
