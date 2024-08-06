@@ -180,6 +180,86 @@ const getPosition = function(){
 
 //getPosition().then(res => console.log(res));
 
+// Async and Await
+const getPositionAsync = function(){
+    return new Promise(function(resolve, reject){
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+}
+
+const whereAmIAwa = async function(){
+    const pos = await getPositionAsync();
+    const {latitude: lat, longitude:lng} = pos.coords;
+    const geo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json&auth=615056672484587946567x602`);
+    const resGeo = await geo.json();
+    const {city, country} = resGeo;
+    const res = await fetch(`https://restcountries.com/v2/name/${country}?fullText=true`).then(res => res.json())
+    .then(dta => renderCountry(dta[0]))
+    .finally(() => countriesContainer.style.opacity = 1);
+    console.log(city);
+    return `You are in ${city}, ${country}`;
+}
+
+console.log("1: I will get location")
+//whereAmIAwa('India').then(city => console.log(city));
+//console.log(city)
+console.log('Finished getting location');
+
+(async function(){
+    const res = await whereAmIAwa('India');
+    console.log(`You are in async function result: ${res}`);
+})()
+//Get 3 countries
+const get3Countries = async function(c1, c2, c3){
+    try{
+        // const [data1] = await getJSON(`https://restcountries.com/v2/name/${c1}?fullText=true`);
+        // const [data2] = await getJSON(`https://restcountries.com/v2/name/${c2}?fullText=true`);
+        // const [data3] = await getJSON(`https://restcountries.com/v2/name/${c3}?fullText=true`);
+
+        const data = await Promise.all([getJSON(`https://restcountries.com/v2/name/${c1}?fullText=true`), getJSON(`https://restcountries.com/v2/name/${c2}?fullText=true`), await getJSON(`https://restcountries.com/v2/name/${c3}?fullText=true`)]);
+
+        console.log(data.map(d => d[0].capital));
+    }
+    catch(err){
+        console.log(err.message);
+    }
+}
+
+get3Countries('Republic of China', 'Singapore', 'Japan');
+
+/// Promise.race
+(async function(){
+    const res = await Promise.race([getJSON(`https://restcountries.com/v2/name/Japan?fullText=true]`), getJSON(`https://restcountries.com/v2/name/Republic of India?fullText=true]`), getJSON(`https://restcountries.com/v2/name/Republic of Korea?fullText=true]`)]);
+    console.log(res[0])
+})()
+
+const timeout = function(s){
+    return new Promise(function(_, reject){
+        setTimeout(function(){
+            reject(new Error('Request took too long'))
+        }, s*1000);
+    })
+}
+
+Promise.race([
+    getJSON(`https://restcountries.com/v2/name/Japan?fullText=true]`),
+    timeout(1)]).then(res => console.log(res[0])).catch(err => console.log(err)
+);
+
+// Promise.allSettled
+Promise.allSettled([
+    Promise.resolve('Success'),
+    Promise.reject('Rejected'),
+    Promise.resolve('Another success')
+]).then(res => console.log(res));
+
+
+/// Promise.any - returns first fulfilled Promise
+Promise.any([
+    Promise.resolve('Success'),
+    Promise.reject('Rejected'),
+    Promise.resolve('Another success')
+]).then(res => console.log(res));
 ///////////////////////////////////////
 // Coding Challenge #1
 
@@ -259,36 +339,36 @@ TEST DATA: Images in the img folder. Test the error handler by passing a wrong i
 
 GOOD LUCK 😀
 */
-const imgContainer = document.querySelector('.images')
-const createImage = function(uri){
-    return new Promise(function(resolve,reject){
-        const imageLoad = document.createElement('img');
-        imageLoad.src = uri;
-        imageLoad.addEventListener('load', ()=> {
-            imgContainer.append(imageLoad);
-            resolve(imageLoad);
-        });
+// const imgContainer = document.querySelector('.images')
+// const createImage = function(uri){
+//     return new Promise(function(resolve,reject){
+//         const imageLoad = document.createElement('img');
+//         imageLoad.src = uri;
+//         imageLoad.addEventListener('load', ()=> {
+//             imgContainer.append(imageLoad);
+//             resolve(imageLoad);
+//         });
 
-        imageLoad.addEventListener('error', ()=>{
-            reject(new Error('Image not found'));
-        });
-    });
-}
+//         imageLoad.addEventListener('error', ()=>{
+//             reject(new Error('Image not found'));
+//         });
+//     });
+// }
 
-let currrentImg;
-createImage('img/img-1.jpg')
-.then(img => {
-    currrentImg = img;
-    console.log(`Image loaded.`);
-    return wait(2);
-})
-.then(() => {
-    currrentImg.style.display = 'none';
-    return createImage('img/img-2.jpg')
-})
-.then(img =>{
-    currrentImg = img;
-    return wait(2);
-})
-.then(() => currrentImg.style.display = 'none')
-.catch(err => console.error(err));
+// let currrentImg;
+// createImage('img/img-1.jpg')
+// .then(img => {
+//     currrentImg = img;
+//     console.log(`Image loaded.`);
+//     return wait(2);
+// })
+// .then(() => {
+//     currrentImg.style.display = 'none';
+//     return createImage('img/img-2.jpg')
+// })
+// .then(img =>{
+//     currrentImg = img;
+//     return wait(2);
+// })
+// .then(() => currrentImg.style.display = 'none')
+// .catch(err => console.error(err));
