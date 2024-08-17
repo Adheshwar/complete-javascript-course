@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "msedge",
+            "name": "http://127.0.0.1:3000/17-Modern-JS-Modules-Tooling/starter/index.html",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/17-Modern-JS-Modules-Tooling/starter/index.html"
+        }
+    ]
+}
