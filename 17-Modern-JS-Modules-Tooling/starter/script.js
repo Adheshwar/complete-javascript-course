@@ -1,6 +1,7 @@
 // Importing module
 import { addToCart, totalPrice as price, tq } from "./shoppingCart.js";
-import cloneDeep from "../node_modules/lodash-es/cloneDeep.js";
+//import cloneDeep from "../node_modules/lodash-es/cloneDeep.js";
+import cloneDeep from "./node_modules/lodash-es/cloneDeep.js";
 
 //import * as ShoppingCart from "./shoppingCart.js";
 console.log(`Importing module`);
@@ -82,3 +83,25 @@ console.log(stateClone);
 const stateDeepClone = cloneDeep(state);
 state.user.loggedIn = false;
 console.log(stateDeepClone);
+
+class Person {
+    #greeting = 'Hey';
+    constructor(name){
+        this.name = name;
+        console.log(`${this.#greeting}, ${this.name}`);
+    }
+}
+
+const adhesh = new Person('Adhesh');
+
+console.log('Adhesh' ?? null);
+
+console.log(cart.find(el => el.quantity >=2));
+Promise.resolve('Test').then(x => console.log(x));
+
+import 'core-js/stable/array/find.js';
+import 'regenerator-runtime/runtime';
+
+if(module.hot){
+    module.hot.accept();
+}
