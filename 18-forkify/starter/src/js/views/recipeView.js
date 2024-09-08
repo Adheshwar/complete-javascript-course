@@ -4,34 +4,41 @@ import { Fraction } from 'fractional';
 console.log(Fraction);
 
 class RecipeView {
-    #parentElement = document.querySelector('.recipe');
-    #data;
+  #parentElement = document.querySelector('.recipe');
+  #data;
 
-    render(data) {
-        this.#data = data;
-        //console.log("recipeView Data: " + JSON.stringify(this.#data));
-        const markUp = this.#generateMarkup();
-        this.#clear();
-        this.#parentElement.insertAdjacentHTML('afterbegin', markUp);
-    }
+  addHandlerRender(handler) {
+    let ini = ['hashchange', 'load'];
+    ini.forEach(el => {
+      window.addEventListener(el, handler);
+    });
+  }
 
-    renderSpinner = function () {
-        const markup = `
+  render(data) {
+    this.#data = data;
+    //console.log("recipeView Data: " + JSON.stringify(this.#data));
+    const markUp = this.#generateMarkup();
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markUp);
+  }
+
+  renderSpinner = function () {
+    const markup = `
       <div class="spinner">
               <svg>
                 <use href="${icons}#icon-loader"></use>
               </svg>
             </div>`;
-        this.#parentElement.innerHTML = '';
-        this.#parentElement.insertAdjacentHTML('afterbegin', markup)
-    }
+    this.#parentElement.innerHTML = '';
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup)
+  }
 
-    #clear() {
-        this.#parentElement.innerHTML = '';
-    }
+  #clear() {
+    this.#parentElement.innerHTML = '';
+  }
 
-    #generateMarkup() {
-        return `<figure class="recipe__fig">
+  #generateMarkup() {
+    return `<figure class="recipe__fig">
           <img src="${this.#data.image}" alt="Tomato" class="recipe__img" />
           <h1 class="recipe__title">
             <span>${this.#data.title}</span>
@@ -104,10 +111,10 @@ class RecipeView {
             </svg>
           </a>
         </div>`;
-    }
+  }
 
-    #generateMarkUpIngredient(ing) {
-        return `<li class="recipe__ingredient">
+  #generateMarkUpIngredient(ing) {
+    return `<li class="recipe__ingredient">
           <svg class="recipe__icon">
             <use href="${icons}#icon-check"></use>
           </svg>
@@ -118,7 +125,7 @@ class RecipeView {
           </div>
         </li>
         `;
-    }
+  }
 }
 
 export default new RecipeView();
